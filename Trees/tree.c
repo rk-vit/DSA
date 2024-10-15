@@ -215,7 +215,6 @@ int main() {
         printf("\nSearched element (BFS) 4: %d\n", foundBfs->data);
     else
         printf("\nElement 4 not found (BFS)\n");
-
     return 0;
 }
 

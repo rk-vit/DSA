@@ -53,8 +53,8 @@ searchTree find(int x , searchTree T){
     }
     else{
         if(x==T->data) return T;
-        if(x<T->data) find(x,T->left);
-        if(x>T->data) find(x , T->right);
+        if(x<T->data) return find(x,T->left);
+        if(x>T->data) return find(x , T->right);
         
     }
 }
@@ -65,6 +65,44 @@ searchTree findMin(searchTree T){
     }
     while(T->left !=NULL) T = T->left;
     return T;
+}
+searchTree findMax(searchTree T){
+    if(isEmpty(T)){
+        printf("No elements to search");
+        return NULL;
+    }
+    while(T->right!=NULL) T = T->right;
+    return T;
+}
+
+searchTree delete(int x,searchTree T){
+    searchTree tmpcell;
+    if(isEmpty(T)) printf("No element to delete");
+    else if(x<T->data) T->left = delete(x,T->left);
+    else if(x>T->data) T->right = delete(x,T->right);
+    else{
+        if(T->left && T->right){
+            tmpcell = findMin(T->right);
+            T->data = tmpcell->data;
+            T->right = delete(T->data,T->right);
+        }else{
+            tmpcell = T;
+            if(T->left==NULL) T= T->right;
+            else if(T->right==NULL) T= T->left;
+            free(tmpcell);
+        }
+    return T;
+    }
+
+}
+searchTree findKthMin(searchTree T,int k){
+    static int count = 0;
+    if(T==NULL) return NULL;
+    searchTree left = findKthMin(T->left,k);
+    if(left!=NULL) return left;
+    count++;
+    if(count==k) return T;
+    return findKthMin(T->right,k);
 }
 int main(){
     int n;
@@ -78,9 +116,16 @@ int main(){
         int temp; scanf("%d",&temp);
         insert(root,temp);
     }
-    inOrderTraversal(root);
-    printf("\n Element found:- %d" , find(4,root)->data); 
-    printf("\nThe minimum element is:- %d",findMin(root)->data);
+    //printf("InorderTraversal before deletion ");
+    //inOrderTraversal(root);
+    //printf("\n Element found:- %d" , find(4,root)->data); 
+    //printf("\nThe minimum element is:- %d",findMin(root)->data);
+    //printf("\nThe maximum element is:- %d",findMax(root)->data);
+    //delete(2,root);
+    //printf("\nInorderTraversal after deletion ");
+    //inOrderTraversal(root);
+    printf("%d",findKthMin(root,2)->data);
+
 
 }
 
