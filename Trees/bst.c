@@ -104,6 +104,15 @@ searchTree findKthMin(searchTree T,int k){
     if(count==k) return T;
     return findKthMin(T->right,k);
 }
+searchTree findKthMax(searchTree T,int k){
+    static int count = 0;
+    if(T==NULL) return NULL;
+    searchTree right = findKthMax(T->right,k);
+    if(right!=NULL) return right;
+    count++;
+    if(count==k) return T;
+    return findKthMax(T->left,k);
+}
 int main(){
     int n;
     searchTree root = NULL;
@@ -124,7 +133,8 @@ int main(){
     //delete(2,root);
     //printf("\nInorderTraversal after deletion ");
     //inOrderTraversal(root);
-    printf("%d",findKthMin(root,2)->data);
+    printf("%d \n",findKthMin(root,2)->data);
+    printf("%d",findKthMax(root,3)->data);
 
 
 }

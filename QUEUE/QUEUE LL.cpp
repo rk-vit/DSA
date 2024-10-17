@@ -6,22 +6,23 @@ struct qnode{
 	int element;
 	nodeptr next;
 };
-
-nodeptr qfront =NULL;
-nodeptr qrear = NULL;	
-typedef nodeptr QUEUE ;
+struct queue{
+	nodeptr qfront;
+	nodeptr qrear;	
+};
+typedef struct queue* QUEUE ;
 int isEmpty(QUEUE Q){
-	return qfront==NULL;
+	return Q->qfront==NULL;
 }
 void dequeue(QUEUE Q){
-	if(qfront == NULL){
+	if(Q->qfront == NULL){
 		printf("Queue underflow");
 	}else{
-		nodeptr temp = qfront;
-		qfront=qfront->next;
+		nodeptr temp = Q->qfront;
+		Q->qfront=Q->qfront->next;
 		free(temp);
-		if(qfront==NULL){
-			qrear=NULL;
+		if(Q->qfront==NULL){
+			Q->qrear = NULL;
 		}
 	}
 }
@@ -39,12 +40,13 @@ void enqueue(QUEUE Q , int x){
 	else{
 		cell->element=x;
 		cell->next=NULL;
-		if(qrear==NULL){
-			qfront = cell;
-			qrear = cell;	
+		if(Q->qrear==NULL){
+			Q->qfront = cell;
+			Q->qrear = cell;	
 		}else{
+			Q->qrear->next = cell;
+			Q->qrear=cell;
 			
-			qrear=cell;
 		}
 	}
 }
@@ -52,18 +54,19 @@ QUEUE createQueue(){
 	QUEUE Q = (QUEUE)malloc(sizeof(struct qnode));
 	if(Q==NULL) printf("Fatal err");
 	else{
-		makeEmpty(Q);
+		Q->qfront = NULL;
+		Q->qrear =NULL;
 		return Q;
 	}
 }
 
 int toq(QUEUE Q){
-	printf("%d",qfront->element);
+	printf("%d",Q->qfront->element);
 }
 
 int main(){
 	QUEUE Q = createQueue();
 	enqueue(Q,5);
-	
+	enqueue(Q,4);
 	toq(Q);
 }
